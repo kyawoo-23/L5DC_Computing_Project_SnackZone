@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang='en' className='dark'>
       <body className={poppins.className} suppressHydrationWarning={true}>
         <NavBar />
-        <div className='max-w-5xl p-6  mx-auto'>
+        <div className='max-w-5xl p-6 mx-auto'>
           <Providers>{children}</Providers>
         </div>
       </body>

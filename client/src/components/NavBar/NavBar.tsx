@@ -46,16 +46,18 @@ const NavBar = () => {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className='sm:hidden'
         />
-        <NavbarBrand as={Link} href={"/"}>
-          <Image
-            src={SnackZone}
-            alt='Snack Zone logo'
-            width={70}
-            height={70}
-            className='rounded'
-            priority
-            quality={100}
-          />
+        <NavbarBrand>
+          <Link href='/'>
+            <Image
+              src={SnackZone}
+              alt='Snack Zone logo'
+              width={70}
+              height={70}
+              className='rounded'
+              priority
+              quality={100}
+            />
+          </Link>
         </NavbarBrand>
       </NavbarContent>
 
