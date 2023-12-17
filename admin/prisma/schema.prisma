@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  CategoryId    String    @id @default(cuid())
+  CategoryName  String    @unique
+  CategoryImage String
+  IsActive      Int       @default(1)
+  Products      Product[]
+}
+
+model Supplier {
+  SupplierId    String    @id @default(cuid())
+  SupplierName  String    @unique
+  SupplierImage String
+  IsActive      Int       @default(1)
+  Products      Product[]
+}
+
+model Variant {
+  VariantId       String           @id @default(cuid())
+  VariantName     String           @unique
+  VariantColor    String
+  ProductVariants ProductVariant[]
+}
+
+model Product {
+  ProductId              String            @id @default(cuid())
+  ProductName            String
+  ProductDescription     String
+  ProductPrimaryImage    String
+  ProductWeight          Float
+  ProductPrice           Float?
+  WholesalePrice         Float?
+  ProductPackingQuantity Int
+  IsPromotion            Int               @default(0)
+  PromotionPrice         Float?
+  IsFeatured             Int               @default(0)
+  IsActive               Int               @default(0)
+  Supplier               Supplier          @relation(fields: [SupplierId], references: [SupplierId])
+  SupplierId             String
+  Category               Category          @relation(fields: [CategoryId], references: [CategoryId])
+  CategoryId             String
+  ProductVariants        ProductVariant[]
+  ProductImages          ProductImage[]
+  PurchaseProducts       PurchaseProduct[]
+}
+
+model ProductVariant {
+  ProductVariantId String            @id @default(cuid())
+  Product          Product           @relation(fields: [ProductId], references: [ProductId])
+  ProductId        String
+  Variant          Variant           @relation(fields: [VariantId], references: [VariantId])
+  VariantId        String
+  PurchaseProducts PurchaseProduct[]
+}
+
+model ProductImage {
+  ProductImagesId String  @id @default(cuid())
+  Product         Product @relation(fields: [ProductId], references: [ProductId])
+  ProductId       String
+  ProductImage    String
+}
+
+model PurchaseProduct {
+  PurchaseProductId String         @id @default(cuid())
+  PurchaseAt        DateTime       @default(now())
+  Product           Product        @relation(fields: [ProductId], references: [ProductId])
+  ProductId         String
+  ProductVariant    ProductVariant @relation(fields: [ProductVariantId], references: [ProductVariantId])
+  ProductVariantId  String
+  PurchaseQuantity  Int
+  OriginalPrice     Float
+  ExpiryDate        DateTime
+  PurchasedBy       Admin          @relation(fields: [AdminId], references: [AdminId])
+  AdminId           String
+  ProductStock      Int
+}
+
+model Admin {
+  AdminId          String            @id @default(cuid())
+  Name             String
+  Email            String            @unique
+  Password         String?
+  AdminRole        AdminRole         @relation(fields: [AdminRoleId], references: [AdminRoleId])
+  AdminRoleId      String
+  IsActive         Int               @default(1)
+  PurchaseProducts PurchaseProduct[]
+}
+
+model AdminRole {
+  AdminRoleId   String  @id @default(cuid())
+  AdminRoleName String  @unique
+  Admins        Admin[]
+}
+
+model DeliveryService {
+  DeliveryServiceId    String @id @default(cuid())
+  DeliveryServiceName  String @unique
+  DeliveryServiceImage String
+  IsActive             Int    @default(1)
+}

@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `category` MODIFY `IsActive` INTEGER NOT NULL DEFAULT 1;
+
+-- AlterTable
+ALTER TABLE `supplier` MODIFY `IsActive` INTEGER NOT NULL DEFAULT 1;
