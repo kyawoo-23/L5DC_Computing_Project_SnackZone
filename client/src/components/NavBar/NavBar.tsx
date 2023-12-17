@@ -14,21 +14,24 @@ import {
 } from "@nextui-org/react";
 import SnackZone from "@/assets/Snack Zone Logo.png";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
+  const pathName = usePathname();
   const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
+    {
+      name: "Category",
+      link: "/category",
+    },
+    {
+      name: "Supplier",
+      link: "/supplier",
+    },
+    {
+      name: "Promotion",
+      link: "/promotion",
+    },
   ];
 
   return (
@@ -43,7 +46,7 @@ const NavBar = () => {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className='sm:hidden'
         />
-        <NavbarBrand>
+        <NavbarBrand as={Link} href={"/"}>
           <Image
             src={SnackZone}
             alt='Snack Zone logo'
@@ -57,21 +60,19 @@ const NavBar = () => {
       </NavbarContent>
 
       <NavbarContent className='hidden sm:flex gap-4' justify='center'>
-        <NavbarItem>
-          <Link color='primary' href='#'>
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link href='#' aria-current='page'>
-            Customers
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color='foreground' href='#'>
-            Integrations
-          </Link>
-        </NavbarItem>
+        {menuItems.map((item, index) => (
+          <NavbarItem
+            key={index}
+            {...(pathName === item.link ? { isActive: true } : {})}
+          >
+            <Link
+              color={pathName === item.link ? "primary" : "foreground"}
+              href={`${item.link}`}
+            >
+              {item.name}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
       <NavbarContent justify='end'>
         <NavbarItem className='hidden lg:flex'>
@@ -95,10 +96,10 @@ const NavBar = () => {
                   : "foreground"
               }
               className='w-full'
-              href='#'
+              href={`${item.link}`}
               size='lg'
             >
-              {item}
+              {item.name}
             </Link>
           </NavbarMenuItem>
         ))}

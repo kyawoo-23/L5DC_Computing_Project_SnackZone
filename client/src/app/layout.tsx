@@ -15,6 +15,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Snack Zone",
   description: "Developed by Kko",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
@@ -26,7 +29,9 @@ export default function RootLayout({
     <html lang='en' className='dark'>
       <body className={poppins.className} suppressHydrationWarning={true}>
         <NavBar />
-        <Providers>{children}</Providers>
+        <div className='max-w-5xl p-6  mx-auto'>
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );
