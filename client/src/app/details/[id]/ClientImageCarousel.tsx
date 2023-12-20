@@ -6,9 +6,19 @@ import { ProductImage } from "@prisma/client";
 
 export default function ClientImageCarousel({
   imageList,
+  primaryImg,
 }: {
   imageList: ProductImage[];
+  primaryImg: string;
 }) {
+  const imageListWithPrimary = [
+    {
+      ProductId: Math.random().toString(),
+      ProductImagesId: Math.random().toString(),
+      ProductImage: primaryImg,
+    },
+  ].concat(imageList);
+
   return (
     <Carousel
       autoPlay
@@ -19,7 +29,7 @@ export default function ClientImageCarousel({
       swipeable
       showThumbs={false}
     >
-      {imageList.map((image) => (
+      {imageListWithPrimary.map((image) => (
         <div key={image.ProductImagesId}>
           <Image
             alt='image'
