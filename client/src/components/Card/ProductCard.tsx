@@ -69,7 +69,7 @@ export default function ProductCard({
             ) : null}
           </div>
 
-          <Button as={Link} size='sm' href={`/details/${productId}}`}>
+          <Button as={Link} size='sm' href={`/details/${productId}`}>
             Details
           </Button>
         </div>

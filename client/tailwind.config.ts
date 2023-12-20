@@ -19,6 +19,7 @@ const config: Config = {
   },
   darkMode: "class",
   plugins: [
+    require("@headlessui/tailwindcss")({ prefix: "ui" }),
     nextui({
       themes: {
         light: {

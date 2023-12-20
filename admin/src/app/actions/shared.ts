@@ -1,6 +1,9 @@
 import toast from "react-hot-toast";
 
-export const validatePositiveNumber = (value: string, errorMessage: string) => {
+export const validatePositiveNumber = (
+  value: string | undefined,
+  errorMessage: string
+) => {
   if (!value || parseFloat(value) <= 0) {
     toast.error(errorMessage);
     return false;

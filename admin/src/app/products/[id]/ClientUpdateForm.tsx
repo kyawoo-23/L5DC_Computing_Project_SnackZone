@@ -104,7 +104,7 @@ const ClientUpdateForm = ({
     if (formData.get("IsPromotion")) {
       let invalid = !validatePositiveNumber(
         (formData.get("PromotionPrice") as string) ||
-          PromotionPrice!.toString(),
+          PromotionPrice?.toString(),
         "Promotion price is required to turn on promotion status"
       );
       if (invalid) {
@@ -115,7 +115,7 @@ const ClientUpdateForm = ({
     if (formData.get("IsActive")) {
       let invalid =
         !validatePositiveNumber(
-          (formData.get("Price") as string) || ProductPrice!.toString(),
+          (formData.get("Price") as string) || ProductPrice?.toString(),
           "Price cannot be zero or negative to turn on status"
         ) ||
         !validatePositiveNumber(

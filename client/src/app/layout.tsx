@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 import NavBar from "@/components/NavBar/NavBar";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
   return (
     <html lang='en' className='dark'>
       <body className={poppins.className} suppressHydrationWarning={true}>
+        <Toaster position='top-right' reverseOrder={false} />
         <NavBar />
         <div className='max-w-5xl p-6 mx-auto'>
           <Providers>{children}</Providers>
