@@ -1,18 +1,17 @@
 "use client";
 import {
   Button,
-  Chip,
   Radio,
   RadioGroup,
   Select,
   SelectItem,
-  Tabs,
 } from "@nextui-org/react";
 import toast from "react-hot-toast";
 import { Tab } from "@headlessui/react";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdPricetag, IoMdPricetags } from "react-icons/io";
 import { ChangeEvent, useState } from "react";
+import { log } from "console";
 
 type ClientFormProps = {
   id: string;
@@ -71,17 +70,22 @@ export default function ClientForm({
 
   const handleAddToCart = (formData: FormData) => {
     const variant = formData.get("variant");
+    const retailQty = parseInt(formData.get("retailQty") as string) + 1;
+    const wholesaleQty = parseInt(formData.get("wholesaleQty") as string) + 1;
+
     if (!variant) {
       toast.error("Please select a flavor");
       return;
     }
-    if (type === "retail" && retailPrice === 0) {
+    if (type === "retail" && (retailPrice === 0 || retailQty === 0)) {
       toast.error("Please select a quantity");
       return;
-    } else if (type === "wholesale" && wsPrice === 0) {
+    } else if (type === "wholesale" && (wsPrice === 0 || wholesaleQty === 0)) {
       toast.error("Please select a quantity");
       return;
     }
+    console.log(variant, retailQty, wholesaleQty);
+    console.log(type, retailPrice, wsPrice);
   };
 
   return (
@@ -142,6 +146,7 @@ export default function ClientForm({
                   size={"sm"}
                   label='Select quantity'
                   className='w-40'
+                  name='retailQty'
                   onChange={(e) => handleRetailPrice(e)}
                 >
                   {[...Array(packingQuantity)].map((_, i) => (
@@ -170,6 +175,7 @@ export default function ClientForm({
                   size={"sm"}
                   label='Select quantity'
                   className='w-52'
+                  name='wholesaleQty'
                   onChange={(e) => handleWholesalePrice(e)}
                 >
                   {[...Array(20)].map((_, i) => (

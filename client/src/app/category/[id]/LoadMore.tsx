@@ -1,7 +1,7 @@
 "use client";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
-import { fetchProduct } from "@/app/actions/product-actions";
+import { fetchProductByCategory } from "@/app/actions/category-actions";
 import { Prisma } from "@prisma/client";
 import ProductCard from "@/components/Card/ProductCard";
 import Loader from "@/components/Loading/Loader";
@@ -9,7 +9,7 @@ import ProductListingLayout from "@/components/Layout/ProductListingLayout";
 
 let page = 1;
 
-function LoadMore() {
+function LoadMore({ categoryId }: { categoryId: string }) {
   const { ref, inView } = useInView();
 
   const [data, setData] = useState<
@@ -31,7 +31,7 @@ function LoadMore() {
         const delay = 500;
 
         const timeoutId = setTimeout(() => {
-          fetchProduct(page).then((res) => {
+          fetchProductByCategory(categoryId, page).then((res) => {
             if (res.data.length === 0) {
               setEndOfPage(true);
               setIsLoading(false);
@@ -48,7 +48,7 @@ function LoadMore() {
         return () => clearTimeout(timeoutId);
       }
     }
-  }, [inView, data, isLoading, endOfPage]);
+  }, [inView, data, isLoading, endOfPage, categoryId]);
 
   return (
     <>

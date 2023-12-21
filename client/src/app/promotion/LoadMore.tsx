@@ -1,11 +1,11 @@
 "use client";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
-import { fetchProduct } from "@/app/actions/product-actions";
 import { Prisma } from "@prisma/client";
 import ProductCard from "@/components/Card/ProductCard";
 import Loader from "@/components/Loading/Loader";
 import ProductListingLayout from "@/components/Layout/ProductListingLayout";
+import { fetchProductByPromotion } from "../actions/promotion-actions";
 
 let page = 1;
 
@@ -31,7 +31,7 @@ function LoadMore() {
         const delay = 500;
 
         const timeoutId = setTimeout(() => {
-          fetchProduct(page).then((res) => {
+          fetchProductByPromotion(page).then((res) => {
             if (res.data.length === 0) {
               setEndOfPage(true);
               setIsLoading(false);

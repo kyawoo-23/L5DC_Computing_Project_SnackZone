@@ -1,23 +1,31 @@
-import ProductCard from "@/components/Card/ProductCard";
-import { prisma } from "@/lib/prisma";
-import LoadMore from "@/app/LoadMore";
 import { PAGE_COUNT } from "@/app/constants";
+import ProductCard from "@/components/Card/ProductCard";
 import ProductListingLayout from "@/components/Layout/ProductListingLayout";
+import { prisma } from "@/lib/prisma";
+import LoadMore from "./LoadMore";
+import PageTitle from "@/components/Heading/PageTitle";
 
-export default async function Page() {
+export default async function SupplierDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const data = await prisma.product.findMany({
+    where: {
+      SupplierId: params.id,
+      IsActive: 1,
+    },
     include: {
       Category: true,
       Supplier: true,
     },
-    where: {
-      IsActive: 1,
-    },
     skip: 0,
     take: PAGE_COUNT,
   });
+
   return (
     <>
+      <PageTitle title={`Supplier: ${data[0].Category.CategoryName}`} />
       <ProductListingLayout>
         <>
           {data &&
@@ -36,7 +44,7 @@ export default async function Page() {
             ))}
         </>
       </ProductListingLayout>
-      <LoadMore />
+      <LoadMore supplierId={params.id} />
     </>
   );
 }
