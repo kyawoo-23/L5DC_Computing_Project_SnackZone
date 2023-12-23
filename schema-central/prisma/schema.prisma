@@ -53,6 +53,7 @@ model Product {
   ProductVariants        ProductVariant[]
   ProductImages          ProductImage[]
   PurchaseProducts       PurchaseProduct[]
+  WishListProducts       WishListProduct[]
 }
 
 model ProductVariant {
@@ -62,6 +63,7 @@ model ProductVariant {
   Variant          Variant           @relation(fields: [VariantId], references: [VariantId])
   VariantId        String
   PurchaseProducts PurchaseProduct[]
+  WishListProducts WishListProduct[]
 }
 
 model ProductImage {
@@ -108,4 +110,24 @@ model DeliveryService {
   DeliveryServiceName  String @unique
   DeliveryServiceImage String
   IsActive             Int    @default(1)
+}
+
+model Customer {
+  CustomerId       String            @id @default(cuid())
+  CustomerName     String
+  CustomerEmail    String            @unique
+  CustomerPassword String?
+  CustomerPhone    String?
+  CustomerAddress  String?
+  WishListProducts WishListProduct[]
+}
+
+model WishListProduct {
+  WishListProductId String         @id @default(cuid())
+  Product           Product        @relation(fields: [ProductId], references: [ProductId])
+  ProductId         String
+  ProductVariant    ProductVariant @relation(fields: [ProductVariantId], references: [ProductVariantId])
+  ProductVariantId  String
+  Customer          Customer       @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId        String
 }

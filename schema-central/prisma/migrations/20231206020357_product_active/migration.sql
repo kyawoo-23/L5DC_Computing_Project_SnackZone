@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `product` ADD COLUMN `IsActive` INTEGER NOT NULL DEFAULT 0;
