@@ -1,7 +1,12 @@
+"use client";
+
 import { Button } from "@nextui-org/button";
-import { CardFooter, Chip, Divider, Image, Link } from "@nextui-org/react";
+import { CardFooter, Chip, Image, Link } from "@nextui-org/react";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { FaRegHeart } from "react-icons/fa6";
+import WishListButton from "@/components/Button/WishListButton";
+import { getCookie } from "cookies-next";
+import { checkProductInWishList } from "@/app/actions/wishlist-actions";
+import { useEffect, useState } from "react";
 
 interface ProductCardProps {
   supplierName: string;
@@ -24,6 +29,23 @@ export default function ProductCard({
   isPromotion,
   promotionPrice,
 }: ProductCardProps) {
+  const token = getCookie("token") as string;
+  const [isWishListed, setIsWishListed] = useState(false);
+  const [wishListProductId, setWishListProductId] = useState(null);
+
+  useEffect(() => {
+    if (token) {
+      const check = async () => {
+        const res = await checkProductInWishList(productId);
+        if (res.isSuccess && res.data) {
+          setIsWishListed(true);
+          setWishListProductId(res.data);
+        }
+      };
+      check();
+    }
+  }, [token, productId]);
+
   return (
     <Card className='py-4 w-fit'>
       <CardHeader className='pb-0 pt-2 px-4 flex-col items-start'>
@@ -37,9 +59,11 @@ export default function ProductCard({
             </small>
           </div>
           <div>
-            <Button isIconOnly size='sm' aria-label='Wishlist'>
-              <FaRegHeart />
-            </Button>
+            <WishListButton
+              productId={productId}
+              isWishListed={isWishListed}
+              wishListProductId={wishListProductId}
+            />
           </div>
         </div>
         <h4 className='font-bold text-lg'>{productName}</h4>

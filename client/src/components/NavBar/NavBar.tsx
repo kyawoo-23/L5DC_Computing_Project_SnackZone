@@ -11,6 +11,7 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
   NavbarMenuItem,
+  Badge,
 } from "@nextui-org/react";
 import SnackZone from "@/assets/Snack Zone Logo.png";
 import Image from "next/image";
@@ -18,6 +19,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import ConfirmBox from "@/components/Dialog/ConfirmBox";
+import { FaHeart } from "react-icons/fa6";
+import { IoCart } from "react-icons/io5";
 
 const NavBar = () => {
   const router = useRouter();
@@ -51,6 +54,7 @@ const NavBar = () => {
     deleteCookie("token");
     deleteCookie("name");
     toast.success("Logout successful");
+    setIsDialogOpen(false);
     router.push("/login");
   };
 
@@ -110,16 +114,30 @@ const NavBar = () => {
                     color='primary'
                     href='/signup'
                     variant='flat'
+                    size='sm'
                   >
                     Sign Up
                   </Button>
                 </NavbarItem>
               </>
             ) : (
-              <>
+              <div className='flex items-center gap-6'>
                 <NavbarItem>
                   <Link href='/profile'>{name}</Link>
                 </NavbarItem>
+                <NavbarItem as={Link} href='/wishlist'>
+                  <span>
+                    <FaHeart className='text-[23px] text-white' />
+                  </span>
+                </NavbarItem>
+                <NavbarItem as={Link} href='/cart'>
+                  <Badge content='5' color='warning' variant='faded'>
+                    <span>
+                      <IoCart className='text-[26px] text-white' />
+                    </span>
+                  </Badge>
+                </NavbarItem>
+
                 <NavbarItem>
                   <Button
                     size='sm'
@@ -129,7 +147,7 @@ const NavBar = () => {
                     Logout
                   </Button>
                 </NavbarItem>
-              </>
+              </div>
             )}
           </NavbarContent>
         )}
