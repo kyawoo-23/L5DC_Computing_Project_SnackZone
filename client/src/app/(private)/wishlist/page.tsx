@@ -43,7 +43,7 @@ export default async function WishListPage() {
                 <Image
                   src={item.Product.ProductPrimaryImage}
                   alt={item.Product.ProductName}
-                  className='w-28 h-28'
+                  className='w-28 h-28 object-cover'
                 />
                 <div>
                   <span className='text-capitalize text-sm'>

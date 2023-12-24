@@ -11,7 +11,7 @@ import { Tab } from "@headlessui/react";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdPricetag, IoMdPricetags } from "react-icons/io";
 import { ChangeEvent, useState } from "react";
-import { log } from "console";
+import { addToCart } from "@/app/actions/cart-actions";
 
 type ClientFormProps = {
   id: string;
@@ -38,6 +38,7 @@ export default function ClientForm({
   wholesalePrice,
   packingQuantity,
 }: ClientFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [retailPrice, setRetailPrice] = useState(0);
   const [wsPrice, setWsPrice] = useState(0);
   const [type, setType] = useState<"retail" | "wholesale">("retail");
@@ -68,24 +69,41 @@ export default function ClientForm({
     }
   };
 
-  const handleAddToCart = (formData: FormData) => {
-    const variant = formData.get("variant");
+  const handleAddToCart = async (formData: FormData) => {
+    setIsLoading(true);
+    const variant = formData.get("variant") as string;
     const retailQty = parseInt(formData.get("retailQty") as string) + 1;
     const wholesaleQty = parseInt(formData.get("wholesaleQty") as string) + 1;
 
     if (!variant) {
       toast.error("Please select a flavor");
+      setIsLoading(false);
       return;
     }
     if (type === "retail" && (retailPrice === 0 || retailQty === 0)) {
       toast.error("Please select a quantity");
+      setIsLoading(false);
       return;
     } else if (type === "wholesale" && (wsPrice === 0 || wholesaleQty === 0)) {
       toast.error("Please select a quantity");
+      setIsLoading(false);
       return;
     }
     console.log(variant, retailQty, wholesaleQty);
     console.log(type, retailPrice, wsPrice);
+
+    const res = await addToCart({
+      productId: id,
+      productVariantId: variant,
+      quantity: type === "retail" ? retailQty : wholesaleQty,
+      purchaseType: type === "retail" ? "retail" : "wholesale",
+    });
+    if (res) {
+      toast.success("Added to cart");
+    } else {
+      toast.error("Something went wrong");
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -198,7 +216,11 @@ export default function ClientForm({
           </Tab.Panels>
         </Tab.Group>
 
-        <Button className='w-fit rounded-lg' type='submit'>
+        <Button
+          className='w-fit rounded-lg'
+          type='submit'
+          isLoading={isLoading}
+        >
           <IoCartOutline /> Add to cart
         </Button>
       </form>

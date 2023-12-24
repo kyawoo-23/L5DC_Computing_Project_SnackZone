@@ -54,6 +54,7 @@ model Product {
   ProductImages          ProductImage[]
   PurchaseProducts       PurchaseProduct[]
   WishListProducts       WishListProduct[]
+  CartProducts           CartProduct[]
 }
 
 model ProductVariant {
@@ -63,6 +64,7 @@ model ProductVariant {
   Variant          Variant           @relation(fields: [VariantId], references: [VariantId])
   VariantId        String
   PurchaseProducts PurchaseProduct[]
+  CartProducts     CartProduct[]
 }
 
 model ProductImage {
@@ -119,6 +121,7 @@ model Customer {
   CustomerPhone    String?
   CustomerAddress  String?
   WishListProducts WishListProduct[]
+  CartProducts     CartProduct[]
 }
 
 model WishListProduct {
@@ -127,4 +130,16 @@ model WishListProduct {
   ProductId         String
   Customer          Customer @relation(fields: [CustomerId], references: [CustomerId])
   CustomerId        String
+}
+
+model CartProduct {
+  CartProductId    String          @id @default(cuid())
+  ProductQuantity  Int
+  PurchaseType     String
+  Product          Product         @relation(fields: [ProductId], references: [ProductId])
+  ProductId        String
+  Customer         Customer        @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId       String
+  ProductVariant   ProductVariant? @relation(fields: [ProductVariantId], references: [ProductVariantId])
+  ProductVariantId String
 }

@@ -4,6 +4,9 @@ import "./globals.css";
 import { Providers } from "@/app/providers";
 import NavBar from "@/components/NavBar/NavBar";
 import { Toaster } from "react-hot-toast";
+import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
+import { prisma } from "@/lib/prisma";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,16 +24,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let count = 0;
+  const token = getCookie("token", { cookies }) as string;
+  if (token) {
+    count = await prisma?.cartProduct.count({
+      where: {
+        CustomerId: token,
+      },
+    });
+  }
+
   return (
     <html lang='en' className='dark'>
       <body className={poppins.className} suppressHydrationWarning={true}>
         <Toaster position='top-right' reverseOrder={false} />
-        <NavBar />
+        <NavBar count={count} />
         <div className='max-w-5xl p-6 mx-auto'>
           <Providers>{children}</Providers>
         </div>

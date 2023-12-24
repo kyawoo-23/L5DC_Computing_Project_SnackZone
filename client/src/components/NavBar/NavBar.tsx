@@ -22,7 +22,7 @@ import ConfirmBox from "@/components/Dialog/ConfirmBox";
 import { FaHeart } from "react-icons/fa6";
 import { IoCart } from "react-icons/io5";
 
-const NavBar = () => {
+const NavBar = ({ count }: { count: number }) => {
   const router = useRouter();
   const token = getCookie("token");
   const name = getCookie("name");
@@ -121,7 +121,7 @@ const NavBar = () => {
                 </NavbarItem>
               </>
             ) : (
-              <div className='flex items-center gap-6'>
+              <div className='flex items-center gap-4'>
                 <NavbarItem>
                   <Link href='/profile'>{name}</Link>
                 </NavbarItem>
@@ -131,7 +131,12 @@ const NavBar = () => {
                   </span>
                 </NavbarItem>
                 <NavbarItem as={Link} href='/cart'>
-                  <Badge content='5' color='warning' variant='faded'>
+                  <Badge
+                    content={count}
+                    color='warning'
+                    variant='faded'
+                    isInvisible={count === 0}
+                  >
                     <span>
                       <IoCart className='text-[26px] text-white' />
                     </span>
