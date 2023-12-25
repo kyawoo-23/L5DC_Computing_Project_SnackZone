@@ -5,6 +5,7 @@ import {
   removeFromWishList,
 } from "@/app/actions/wishlist-actions";
 import { Button } from "@nextui-org/react";
+import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -28,6 +29,11 @@ export default function WishListButton({
     useState(wishListProductId);
 
   const handleWishList = async () => {
+    const token = getCookie("token") as string;
+    if (!token) {
+      router.push("/login");
+    }
+
     setIsLoading(true);
     if (initState) {
       if (newWishListProductId) {

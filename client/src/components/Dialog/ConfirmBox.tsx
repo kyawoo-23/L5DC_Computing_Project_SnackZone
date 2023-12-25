@@ -33,16 +33,16 @@ export default function ConfirmBox({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='flex flex-col gap-1'>{title}</ModalHeader>
-            <ModalBody>{children}</ModalBody>
-            <ModalFooter>
-              <Button color='danger' variant='light' onPress={onClose}>
-                Close
-              </Button>
-              <form action={onAction}>
+            <form action={onAction}>
+              <ModalHeader className='flex flex-col gap-1'>{title}</ModalHeader>
+              <ModalBody>{children}</ModalBody>
+              <ModalFooter>
+                <Button color='danger' variant='light' onPress={onClose}>
+                  Close
+                </Button>
                 <SubmitButton label={buttonLabel} />
-              </form>
-            </ModalFooter>
+              </ModalFooter>
+            </form>
           </>
         )}
       </ModalContent>

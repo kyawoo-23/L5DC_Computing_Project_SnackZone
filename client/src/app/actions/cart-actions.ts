@@ -5,7 +5,139 @@ import { revalidatePath } from "next/cache";
 import { ResponseType } from "@/app/actions/response-type";
 import { cookies } from "next/headers";
 import { getCookie } from "cookies-next";
-import { type Prisma } from "@prisma/client";
+import { generateInvoiceCode } from "./shared";
+import { utapi } from "@/lib/uploadthing";
+
+type checkoutCartProps = {
+  CustomerPhone: string;
+  CustomerAddress: string;
+  IsPrepaid: number;
+  TotalPrice: number;
+  formData: FormData;
+};
+export async function checkoutCart({
+  CustomerPhone,
+  CustomerAddress,
+  IsPrepaid,
+  TotalPrice,
+  formData,
+}: checkoutCartProps): Promise<ResponseType> {
+  const customerId = getCookie("token", { cookies }) as string;
+  if (!customerId) {
+    return {
+      message: `You must login to checkout cart`,
+      isSuccess: false,
+    };
+  }
+
+  try {
+    const orderCode = generateInvoiceCode();
+
+    const createdOrder = await prisma.customerOrder.create({
+      data: {
+        Customer: {
+          connect: {
+            CustomerId: customerId,
+          },
+        },
+        CustomerPhone,
+        CustomerAddress,
+        IsPrepaid,
+        TotalPrice,
+        OrderCode: orderCode,
+      },
+    });
+
+    if (IsPrepaid) {
+      const imgFile = formData.get("prepaidFile");
+      const imgRes = await utapi.uploadFiles(imgFile);
+      await prisma.customerOrder.update({
+        where: {
+          CustomerOrderId: createdOrder.CustomerOrderId,
+        },
+        data: {
+          PrepaidVoucherImage: imgRes ? imgRes.data?.url : null,
+        },
+      });
+    }
+
+    const cartProducts = await prisma.cartProduct.findMany({
+      where: {
+        CustomerId: customerId,
+      },
+      include: {
+        Product: {
+          include: {
+            Supplier: true,
+          },
+        },
+        ProductVariant: {
+          include: {
+            Variant: true,
+          },
+        },
+      },
+    });
+
+    const orderProducts = cartProducts.map((cartProduct) => {
+      return {
+        ProductName: cartProduct.Product.ProductName,
+        VariantName: cartProduct.ProductVariant?.Variant.VariantName,
+        Quantity: cartProduct.ProductQuantity,
+        Price:
+          cartProduct.PurchaseType === "wholesale"
+            ? cartProduct.Product.WholesalePrice!
+            : cartProduct.Product.IsPromotion
+            ? cartProduct.Product.PromotionPrice
+            : cartProduct.Product.ProductPrice,
+        ProductId: cartProduct.ProductId,
+        CustomerOrderId: createdOrder.CustomerOrderId,
+        PurchaseType: cartProduct.PurchaseType,
+      };
+    });
+
+    for (const orderProduct of orderProducts) {
+      await prisma.orderProduct.create({
+        data: {
+          Price: orderProduct.Price!,
+          ProductName: orderProduct.ProductName,
+          Quantity: orderProduct.Quantity,
+          VariantName: orderProduct.VariantName!,
+          PurchaseType: orderProduct.PurchaseType,
+          ProductId: orderProduct.ProductId,
+          CustomerOrderId: orderProduct.CustomerOrderId,
+        },
+      });
+    }
+
+    await prisma.cartProduct.deleteMany({
+      where: {
+        CustomerId: customerId,
+      },
+    });
+
+    await prisma.customer.update({
+      where: {
+        CustomerId: customerId,
+      },
+      data: {
+        CustomerPhone,
+        CustomerAddress,
+      },
+    });
+
+    revalidatePath("/cart");
+    return {
+      message: `Checkout cart successfully`,
+      isSuccess: true,
+    };
+  } catch (error) {
+    return {
+      message: `Checkout cart failed, ${error}`,
+      isSuccess: false,
+    };
+  }
+}
 
 export async function removeFromCart(
   cartProductId: string

@@ -38,3 +38,23 @@ function concatenateUint8Arrays(...arrays: Uint8Array[]): Uint8Array {
 
   return result;
 }
+
+export function generateInvoiceCode() {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear() % 100; // Get last two digits of the year
+  const month = currentDate.getMonth() + 1; // Month starts from 0, so add 1
+  const day = currentDate.getDate();
+
+  const monthString = ("0" + month).slice(-2); // Ensures two digits for month
+  const dayString = ("0" + day).slice(-2); // Ensures two digits for day
+
+  // Generate a random 2-letter code
+  const randomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
+
+  // Concatenate the date components and take the last 4 characters of the random code to form the invoice code
+  const invoiceCode = `${year}${monthString}${dayString}${randomCode}`.slice(
+    -4
+  );
+
+  return invoiceCode;
+}

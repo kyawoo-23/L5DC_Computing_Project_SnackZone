@@ -4,7 +4,7 @@ import { Button, Chip, Link, Image } from "@nextui-org/react";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import ClientRemoveButton from "./ClientRemoveButton";
-import { MdShoppingCartCheckout } from "react-icons/md";
+import ClientCheckout from "./ClientCheckout";
 
 export default async function CartPage() {
   const token = getCookie("token", { cookies }) as string;
@@ -24,6 +24,12 @@ export default async function CartPage() {
           Variant: true,
         },
       },
+    },
+  });
+
+  const info = await prisma.customer.findUnique({
+    where: {
+      CustomerId: token,
     },
   });
 
@@ -139,23 +145,9 @@ export default async function CartPage() {
             </div>
           </div>
         )}
-        <Button className='w-fit ms-auto'>
-          <MdShoppingCartCheckout />
-          Checkout ($
-          {data &&
-            data.length > 0 &&
-            data.reduce((total, item) => {
-              const price =
-                item.PurchaseType === "wholesale"
-                  ? item.Product.WholesalePrice! *
-                    item.Product.ProductPackingQuantity
-                  : item.Product.IsPromotion === 1
-                  ? item.Product.PromotionPrice!
-                  : item.Product.ProductPrice!;
-              return total + item.ProductQuantity * price;
-            }, 0)}
-          )
-        </Button>
+        {data && data.length > 0 && info && (
+          <ClientCheckout data={data} info={info} />
+        )}
       </div>
     </div>
   );
