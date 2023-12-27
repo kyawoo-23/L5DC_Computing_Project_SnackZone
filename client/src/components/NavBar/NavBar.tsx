@@ -12,6 +12,7 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   Badge,
+  Input,
 } from "@nextui-org/react";
 import SnackZone from "@/assets/Snack Zone Logo.png";
 import Image from "next/image";
@@ -20,7 +21,7 @@ import { deleteCookie, getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import ConfirmBox from "@/components/Dialog/ConfirmBox";
 import { FaHeart } from "react-icons/fa6";
-import { IoCart } from "react-icons/io5";
+import { IoCart, IoSearch } from "react-icons/io5";
 
 const NavBar = ({ count }: { count: number }) => {
   const router = useRouter();
@@ -56,6 +57,15 @@ const NavBar = ({ count }: { count: number }) => {
     toast.success("Logout successful");
     setIsDialogOpen(false);
     router.push("/login");
+  };
+
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    clearTimeout(debounceTimer);
+    const searchTerm = e.target.value.trim();
+    debounceTimer = setTimeout(() => {
+      searchTerm ? router.push(`/search/${searchTerm}`) : router.push("/");
+    }, 800);
   };
 
   return (
@@ -100,6 +110,17 @@ const NavBar = ({ count }: { count: number }) => {
               </Link>
             </NavbarItem>
           ))}
+          <NavbarItem>
+            <div>
+              <Input
+                size='sm'
+                classNames={{ inputWrapper: ["h-[12px]"] }}
+                placeholder='Search'
+                startContent={<IoSearch />}
+                onChange={(e) => handleSearchQuery(e)}
+              />
+            </div>
+          </NavbarItem>
         </NavbarContent>
         {mount && (
           <NavbarContent justify='end'>

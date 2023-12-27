@@ -59,7 +59,6 @@ export default function ClientCheckout({ data, info }: ClientCheckoutProps) {
         return formData;
       })(),
     };
-    // console.log(orderData);
     const res = await checkoutCart(orderData);
     if (res.isSuccess) {
       toast.success(res.message);
