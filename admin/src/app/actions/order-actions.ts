@@ -18,6 +18,68 @@ export async function completeOrder(id: string): Promise<ResponseType> {
       },
     });
 
+    const orderProducts = await prisma.orderProduct.findMany({
+      where: {
+        CustomerOrderId: id,
+      },
+      include: {
+        Product: true,
+      },
+    });
+
+    const purchaseProductUpdates = [];
+    for (const orderProduct of orderProducts) {
+      const purchaseProducts = await prisma.purchaseProduct.findMany({
+        where: {
+          Product: {
+            ProductId: orderProduct.ProductId,
+          },
+          ProductStock: {
+            gt: 0,
+          },
+        },
+        orderBy: {
+          ExpiryDate: "asc",
+        },
+      });
+
+      let remainingQuantity =
+        orderProduct.PurchaseType === "retail"
+          ? orderProduct.Quantity
+          : orderProduct.Quantity * orderProduct.Product.ProductPackingQuantity;
+
+      for (const purchaseProduct of purchaseProducts) {
+        const availableQuantity = purchaseProduct.ProductStock;
+
+        if (remainingQuantity > 0 && availableQuantity > 0) {
+          const reduceQuantity = Math.min(remainingQuantity, availableQuantity);
+          remainingQuantity -= reduceQuantity;
+
+          purchaseProductUpdates.push(
+            prisma.purchaseProduct.update({
+              where: {
+                PurchaseProductId: purchaseProduct.PurchaseProductId,
+              },
+              data: {
+                ProductStock: {
+                  decrement: reduceQuantity,
+                },
+              },
+            })
+          );
+        }
+      }
+
+      if (remainingQuantity > 0) {
+        return {
+          message: `Insufficient stock for Product: ${orderProduct.Product.ProductName}`,
+          isSuccess: false,
+        };
+      }
+    }
+
+    await prisma.$transaction(purchaseProductUpdates);
+
     revalidatePath(`/orders/${id}`);
     return {
       message: `Order completed successfully`,
