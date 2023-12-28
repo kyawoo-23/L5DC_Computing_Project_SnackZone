@@ -1,12 +1,13 @@
 "use client";
-import { Button, Checkbox, Input, Textarea } from "@nextui-org/react";
+import { Button, Checkbox, Image, Input, Textarea } from "@nextui-org/react";
 import { MdShoppingCartCheckout } from "react-icons/md";
 import { Prisma } from "@prisma/client";
 import ConfirmBox from "@/components/Dialog/ConfirmBox";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { FaPhone } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { checkoutCart } from "@/app/actions/cart-actions";
+import KbzPay from "/public/kbz-pay.jpg";
 
 type ClientCheckoutProps = {
   data: Prisma.CartProductGetPayload<{
@@ -136,15 +137,22 @@ export default function ClientCheckout({ data, info }: ClientCheckoutProps) {
           </Checkbox>
 
           {isSelected && (
-            <input
-              id='fileInput'
-              type='file'
-              className='bg-[#27272a] rounded-lg py-2 px-2 text-sm text-gray-400 leading-tight focus:outline-none focus:shadow-outline'
-              placeholder='Choose a file'
-              name='prepaidFile'
-              accept='image/*'
-              onChange={(e) => setPrepaidFile(e.target.files![0])}
-            />
+            <>
+              <Image src={KbzPay.src} alt='kbz pay' width={250} height={250} />
+              <small>
+                Please input the screenshot of the payment after the transaction
+                to our KBZ Pay account
+              </small>
+              <input
+                id='fileInput'
+                type='file'
+                className='bg-[#27272a] rounded-lg py-2 px-2 text-sm text-gray-400 leading-tight focus:outline-none focus:shadow-outline'
+                placeholder='Choose a file'
+                name='prepaidFile'
+                accept='image/*'
+                onChange={(e) => setPrepaidFile(e.target.files![0])}
+              />
+            </>
           )}
 
           <div className='flex flex-col gap-2'>

@@ -45,6 +45,14 @@ export const columns: ColumnDef<
     },
   },
   {
+    accessorKey: "IsPrepaid",
+    header: "Prepaid",
+    cell: ({ row }) => {
+      const cellValue = row.original;
+      return cellValue.IsPrepaid === 1 ? "Yes" : "No";
+    },
+  },
+  {
     accessorKey: "CustomerOrderId",
     header: "Action",
     id: "actions",

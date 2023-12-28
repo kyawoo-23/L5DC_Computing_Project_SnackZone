@@ -29,7 +29,13 @@ export default function ConfirmBox({
   buttonLabel,
 }: ConfirmBoxType) {
   return (
-    <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
+    <Modal
+      backdrop={"blur"}
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior='outside'
+      isDismissable={false}
+    >
       <ModalContent>
         {(onClose) => (
           <>
