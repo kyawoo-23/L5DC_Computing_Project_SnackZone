@@ -8,21 +8,25 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { Product } from "@prisma/client";
 import StatusPill from "@/components/Pill/StatusPill";
 
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<{
+  ProductStockSum: number;
+  NearestExpiryDate: Date | null;
+  Product: Product | null;
+}>[] = [
   {
-    accessorKey: "ProductName",
+    accessorKey: "Product.ProductName",
     header: "Name",
   },
   {
-    accessorKey: "ProductImage",
+    accessorKey: "Product.ProductImage",
     header: "Image",
     id: "image",
     cell: ({ row }) => {
       const cellValue = row.original;
       return (
         <Image
-          src={cellValue.ProductPrimaryImage || ""}
-          alt={cellValue.ProductName}
+          src={cellValue.Product?.ProductPrimaryImage || ""}
+          alt={cellValue.Product!.ProductName}
           height={40}
           width={40}
           className='rounded bg-zinc-300 w-10 h-10 object-cover'
@@ -31,21 +35,35 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: "IsActive",
+    accessorKey: "Product.IsActive",
     header: "Status",
     id: "status",
     cell: ({ row }) => {
       const cellValue = row.original;
-      return <StatusPill Value={cellValue} />;
+      return <StatusPill Value={{ IsActive: cellValue.Product!.IsActive }} />;
     },
   },
   {
-    accessorKey: "ProductId",
+    accessorKey: "ProductStockSum",
+    header: "Stock",
+  },
+  {
+    accessorKey: "NearestExpiryDate",
+    header: "Expiry Date",
+    cell: ({ row }) => {
+      const cellValue = row.original;
+      return cellValue.NearestExpiryDate
+        ? new Date(cellValue.NearestExpiryDate).toLocaleDateString()
+        : "N/A";
+    },
+  },
+  {
+    accessorKey: "Product.ProductId",
     header: "Action",
     id: "actions",
     cell: ({ row }) => {
       const cellValue = row.original;
-      return <DetailsButton details={cellValue.ProductId} />;
+      return <DetailsButton details={cellValue.Product!.ProductId} />;
     },
   },
   // {

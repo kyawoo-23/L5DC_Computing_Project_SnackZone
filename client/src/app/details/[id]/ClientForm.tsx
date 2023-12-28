@@ -12,6 +12,8 @@ import { IoCartOutline } from "react-icons/io5";
 import { IoMdPricetag, IoMdPricetags } from "react-icons/io";
 import { ChangeEvent, useState } from "react";
 import { addToCart } from "@/app/actions/cart-actions";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 type ClientFormProps = {
   id: string;
@@ -38,6 +40,7 @@ export default function ClientForm({
   wholesalePrice,
   packingQuantity,
 }: ClientFormProps) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [retailPrice, setRetailPrice] = useState(0);
   const [wsPrice, setWsPrice] = useState(0);
@@ -70,6 +73,13 @@ export default function ClientForm({
   };
 
   const handleAddToCart = async (formData: FormData) => {
+    const token = getCookie("cus-token") as string;
+    if (!token) {
+      toast.error("Please login to continue");
+      router.push("/login");
+      return;
+    }
+
     setIsLoading(true);
     const variant = formData.get("variant") as string;
     const retailQty = parseInt(formData.get("retailQty") as string) + 1;

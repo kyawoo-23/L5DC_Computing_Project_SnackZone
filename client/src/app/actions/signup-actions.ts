@@ -31,8 +31,8 @@ export async function createCustomer(
       },
     });
 
-    setCookie("token", createdCustomer.CustomerId, { cookies });
-    setCookie("name", createdCustomer.CustomerName, { cookies });
+    setCookie("cus-token", createdCustomer.CustomerId, { cookies });
+    setCookie("cus-name", createdCustomer.CustomerName, { cookies });
 
     return {
       isSuccess: true,

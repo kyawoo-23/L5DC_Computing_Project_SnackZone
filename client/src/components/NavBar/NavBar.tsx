@@ -25,7 +25,7 @@ import { IoCart, IoSearch } from "react-icons/io5";
 
 const NavBar = ({ count }: { count: number }) => {
   const router = useRouter();
-  const token = getCookie("token");
+  const token = getCookie("cus-token");
   const name = getCookie("name");
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,8 +52,8 @@ const NavBar = ({ count }: { count: number }) => {
   }, []);
 
   const handleLogout = () => {
-    deleteCookie("token");
-    deleteCookie("name");
+    deleteCookie("cus-token");
+    deleteCookie("cus-name");
     toast.success("Logout successful");
     setIsDialogOpen(false);
     router.push("/login");

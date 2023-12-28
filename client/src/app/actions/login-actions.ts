@@ -31,8 +31,8 @@ export async function loginCustomer(formData: FormData): Promise<ResponseType> {
       };
     }
 
-    setCookie("token", user.CustomerId, { cookies });
-    setCookie("name", user.CustomerName, { cookies });
+    setCookie("cus-token", user.CustomerId, { cookies });
+    setCookie("cus-name", user.CustomerName, { cookies });
 
     revalidatePath("/");
     return {

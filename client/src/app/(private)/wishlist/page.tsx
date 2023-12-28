@@ -6,7 +6,7 @@ import { FaTrash } from "react-icons/fa6";
 import ClientRemoveButton from "./ClientRemoveButton";
 
 export default async function WishListPage() {
-  const token = getCookie("token") as string;
+  const token = getCookie("cus-token") as string;
   const data = await prisma.wishListProduct.findMany({
     where: {
       CustomerId: token,

@@ -9,7 +9,7 @@ import { getCookie } from "cookies-next";
 export async function checkProductInWishList(
   productId: string
 ): Promise<ResponseType> {
-  const customerId = getCookie("token", { cookies }) as string;
+  const customerId = getCookie("cus-token", { cookies }) as string;
   if (!customerId) {
     return {
       message: `You must login`,
@@ -48,7 +48,7 @@ export async function checkProductInWishList(
 export async function removeFromWishList(
   wishlistProductId: string
 ): Promise<ResponseType> {
-  const customerId = getCookie("token", { cookies }) as string;
+  const customerId = getCookie("cus-token", { cookies }) as string;
   if (!customerId) {
     return {
       message: `You must login to remove from wishlist`,
@@ -77,7 +77,7 @@ export async function removeFromWishList(
 }
 
 export async function addToWishList(productId: string): Promise<ResponseType> {
-  const customerId = getCookie("token", { cookies }) as string;
+  const customerId = getCookie("cus-token", { cookies }) as string;
   if (!customerId) {
     return {
       message: `You must login to add to wishlist`,

@@ -29,7 +29,7 @@ export default function ProductCard({
   isPromotion,
   promotionPrice,
 }: ProductCardProps) {
-  const token = getCookie("token") as string;
+  const token = getCookie("cus-token") as string;
   const [isWishListed, setIsWishListed] = useState(false);
   const [wishListProductId, setWishListProductId] = useState(null);
 

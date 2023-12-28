@@ -7,7 +7,7 @@ import ClientRemoveButton from "./ClientRemoveButton";
 import ClientCheckout from "./ClientCheckout";
 
 export default async function CartPage() {
-  const token = getCookie("token", { cookies }) as string;
+  const token = getCookie("cus-token", { cookies }) as string;
 
   const data = await prisma.cartProduct.findMany({
     where: {

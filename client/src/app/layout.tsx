@@ -30,7 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   let count = 0;
-  const token = getCookie("token", { cookies }) as string;
+  const token = getCookie("cus-token", { cookies }) as string;
   if (token) {
     count = await prisma?.cartProduct.count({
       where: {

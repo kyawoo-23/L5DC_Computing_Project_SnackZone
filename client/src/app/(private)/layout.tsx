@@ -7,7 +7,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const token = getCookie("token", { cookies });
+  const token = getCookie("cus-token", { cookies });
 
   if (!token) {
     redirect("/login");

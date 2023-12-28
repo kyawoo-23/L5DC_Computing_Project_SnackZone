@@ -16,6 +16,7 @@ export default async function Page() {
     skip: 0,
     take: PAGE_COUNT,
   });
+
   return (
     <>
       <ProductListingLayout>

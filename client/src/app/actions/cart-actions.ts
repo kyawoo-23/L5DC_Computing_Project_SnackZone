@@ -22,7 +22,7 @@ export async function checkoutCart({
   TotalPrice,
   formData,
 }: checkoutCartProps): Promise<ResponseType> {
-  const customerId = getCookie("token", { cookies }) as string;
+  const customerId = getCookie("cus-token", { cookies }) as string;
   if (!customerId) {
     return {
       message: `You must login to checkout cart`,
@@ -142,7 +142,7 @@ export async function checkoutCart({
 export async function removeFromCart(
   cartProductId: string
 ): Promise<ResponseType> {
-  const customerId = getCookie("token", { cookies }) as string;
+  const customerId = getCookie("cus-token", { cookies }) as string;
   if (!customerId) {
     return {
       message: `You must login to remove from cart`,
@@ -181,7 +181,7 @@ export async function addToCart({
   purchaseType: string;
   productVariantId: string;
 }): Promise<ResponseType> {
-  const customerId = getCookie("token", { cookies }) as string;
+  const customerId = getCookie("cus-token", { cookies }) as string;
 
   if (!customerId) {
     return {

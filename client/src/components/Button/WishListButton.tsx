@@ -29,9 +29,11 @@ export default function WishListButton({
     useState(wishListProductId);
 
   const handleWishList = async () => {
-    const token = getCookie("token") as string;
+    const token = getCookie("cus-token") as string;
     if (!token) {
+      toast.error("Please login to continue");
       router.push("/login");
+      return;
     }
 
     setIsLoading(true);
