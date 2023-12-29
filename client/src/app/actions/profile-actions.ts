@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { ResponseType } from "@/app/actions/response-type";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
+import { hashPassword } from "./shared";
 
 export async function updateProfile(formData: FormData): Promise<ResponseType> {
   const name = formData.get("name") as string;
@@ -44,7 +45,7 @@ export async function updateProfile(formData: FormData): Promise<ResponseType> {
           CustomerPhone: phone,
           CustomerEmail: email,
           CustomerAddress: address,
-          CustomerPassword: password,
+          CustomerPassword: await hashPassword(password, token),
         },
       });
     }
