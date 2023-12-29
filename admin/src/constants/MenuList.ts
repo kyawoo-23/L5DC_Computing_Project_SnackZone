@@ -1,5 +1,4 @@
 import {
-  BarChart3,
   ClipboardList,
   ShoppingCart,
   Boxes,
@@ -11,7 +10,6 @@ import {
 } from "lucide-react";
 
 export const Menus = [
-  { title: "Dashboard", path: "/", src: BarChart3 },
   {
     title: "Purchase",
     path: "/purchase",

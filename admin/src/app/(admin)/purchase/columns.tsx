@@ -28,7 +28,7 @@ export const columns: ColumnDef<
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className='w-full justify-start hover:bg-white'
+          className='w-full justify-start hover:bg-white font-bold'
         >
           Purchased At
           {column.getIsSorted() === "asc" ? (

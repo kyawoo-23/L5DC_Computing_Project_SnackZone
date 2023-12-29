@@ -17,8 +17,44 @@ export default async function Page() {
     take: PAGE_COUNT,
   });
 
+  const featured = await prisma.product.findMany({
+    include: {
+      Category: true,
+      Supplier: true,
+    },
+    where: {
+      IsActive: 1,
+      IsFeatured: 1,
+    },
+  });
+
   return (
     <>
+      <h3 className='text-lg font-bold mb-3'>Featured products</h3>
+
+      <ProductListingLayout>
+        <>
+          {featured && featured.length > 0 ? (
+            featured.map((product) => (
+              <ProductCard
+                key={product.ProductId}
+                categoryName={product.Category.CategoryName}
+                productId={product.ProductId}
+                productName={product.ProductName}
+                productPrice={product.ProductPrice!}
+                productPrimaryImage={product.ProductPrimaryImage}
+                supplierName={product.Supplier.SupplierName}
+                isPromotion={product.IsPromotion}
+                promotionPrice={product.PromotionPrice || product.ProductPrice!}
+              />
+            ))
+          ) : (
+            <div>No featured products</div>
+          )}
+        </>
+      </ProductListingLayout>
+
+      <hr className='my-8' />
       <ProductListingLayout>
         <>
           {data &&

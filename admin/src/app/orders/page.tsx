@@ -11,11 +11,14 @@ const OrdersPage = async () => {
       AssignedAdmin: true,
       DeliveryService: true,
     },
+    orderBy: {
+      OrderAt: "desc",
+    },
   });
 
   return (
     <div>
-      <PageHeader title={`Orders for ${new Date().toDateString()}`} />
+      <PageHeader title={`Order List`} />
       <div>
         <DataTable columns={columns} data={data} />
       </div>

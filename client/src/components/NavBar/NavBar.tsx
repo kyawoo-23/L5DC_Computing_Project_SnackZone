@@ -64,7 +64,7 @@ const NavBar = ({ count }: { count: number }) => {
     clearTimeout(debounceTimer);
     const searchTerm = e.target.value.trim();
     debounceTimer = setTimeout(() => {
-      searchTerm ? router.push(`/search/${searchTerm}`) : router.push("/");
+      searchTerm ? router.push(`/search/${searchTerm}`) : null;
     }, 800);
   };
 

@@ -4,6 +4,8 @@ import DetailsButton from "@/components/Buttons/DetailsButton";
 import { ColumnDef } from "@tanstack/react-table";
 import { CustomerOrder, Prisma } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 export const columns: ColumnDef<
   Prisma.CustomerOrderGetPayload<{
@@ -50,6 +52,29 @@ export const columns: ColumnDef<
     cell: ({ row }) => {
       const cellValue = row.original;
       return cellValue.IsPrepaid === 1 ? "Yes" : "No";
+    },
+  },
+  {
+    accessorKey: "OrderAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className='w-full justify-start hover:bg-white font-bold'
+        >
+          Ordered At
+          {column.getIsSorted() === "asc" ? (
+            <ArrowDown className='ml-2 h-4 w-4' />
+          ) : (
+            <ArrowUp className='ml-2 h-4 w-4' />
+          )}
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const cellValue = row.original;
+      return new Date(cellValue.OrderAt).toLocaleString();
     },
   },
   {
