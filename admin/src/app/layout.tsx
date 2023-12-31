@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Snack Zone Admin dashboard",
   description: "Developed by Kko",
+  icons: {
+    icon: "/favico.png",
+  },
 };
 
 export default function RootLayout({
