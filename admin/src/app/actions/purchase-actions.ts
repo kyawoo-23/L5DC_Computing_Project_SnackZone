@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { type Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { ResponseType } from "@/app/actions/response-type";
+import { getCookie } from "cookies-next";
+import { cookies } from "next/headers";
 
 export async function createPurchase(
   formData: FormData
@@ -20,22 +22,12 @@ export async function createPurchase(
             ProductId: formData.get("Product") as string,
           },
         },
-        ProductVariant: {
-          connect: {
-            ProductVariantId: formData.get("ProductVariant") as string,
-          },
-        },
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // TO CHANGE AFTER AUTH
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        VariantName: formData.get("ProductVariant") as string,
         PurchasedBy: {
           connect: {
-            AdminId: "clpxwmrw60002lftvn3ylki5t",
+            AdminId: getCookie("token", { cookies }),
           },
         },
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // TO CHANGE AFTER AUTH
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       },
     });
     return {
@@ -76,6 +68,7 @@ export async function searchProductVariant(query: string): Promise<
       data: productVariants,
     };
   } catch (error) {
+    console.log(error);
     return {
       message: `Failed to get product variants for product`,
       isSuccess: false,

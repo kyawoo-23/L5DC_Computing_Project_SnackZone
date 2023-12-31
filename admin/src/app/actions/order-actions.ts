@@ -34,6 +34,11 @@ export async function completeOrder(id: string): Promise<ResponseType> {
           Product: {
             ProductId: orderProduct.ProductId,
           },
+          ProductVariant: {
+            Variant: {
+              VariantName: orderProduct.VariantName,
+            },
+          },
           ProductStock: {
             gt: 0,
           },

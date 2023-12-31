@@ -94,7 +94,7 @@ export default function ClientPurchaseCreatePage({
               required
               options={productVariants.map((variant) => ({
                 label: variant.label,
-                value: variant.value,
+                value: variant.label,
               }))}
             />
             {productVariants.length === 0 && !isGettingVariants && (

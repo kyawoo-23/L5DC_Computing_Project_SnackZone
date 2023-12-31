@@ -8,12 +8,10 @@ const PurchasePage = async () => {
   const data = await prisma.purchaseProduct.findMany({
     include: {
       Product: true,
-      ProductVariant: {
-        include: {
-          Variant: true,
-        },
-      },
       PurchasedBy: true,
+    },
+    orderBy: {
+      PurchaseAt: "desc",
     },
   });
 

@@ -33,7 +33,7 @@ export default function SuppliersCreatePage() {
     if (res.isSuccess) {
       // formRef.current?.reset();
       toast.success(res.message);
-      redirect("/categories");
+      redirect("/suppliers");
     } else {
       toast.error(res.message);
     }

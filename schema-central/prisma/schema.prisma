@@ -59,12 +59,11 @@ model Product {
 }
 
 model ProductVariant {
-  ProductVariantId String            @id @default(cuid())
-  Product          Product           @relation(fields: [ProductId], references: [ProductId])
+  ProductVariantId String        @id @default(cuid())
+  Product          Product       @relation(fields: [ProductId], references: [ProductId])
   ProductId        String
-  Variant          Variant           @relation(fields: [VariantId], references: [VariantId])
+  Variant          Variant       @relation(fields: [VariantId], references: [VariantId])
   VariantId        String
-  PurchaseProducts PurchaseProduct[]
   CartProducts     CartProduct[]
 }
 
@@ -76,16 +75,15 @@ model ProductImage {
 }
 
 model PurchaseProduct {
-  PurchaseProductId String         @id @default(cuid())
-  PurchaseAt        DateTime       @default(now())
-  Product           Product        @relation(fields: [ProductId], references: [ProductId])
+  PurchaseProductId String   @id @default(cuid())
+  PurchaseAt        DateTime @default(now())
+  Product           Product  @relation(fields: [ProductId], references: [ProductId])
   ProductId         String
-  ProductVariant    ProductVariant @relation(fields: [ProductVariantId], references: [ProductVariantId])
-  ProductVariantId  String
+  VariantName       String
   PurchaseQuantity  Int
   OriginalPrice     Float
   ExpiryDate        DateTime
-  PurchasedBy       Admin          @relation(fields: [AdminId], references: [AdminId])
+  PurchasedBy       Admin    @relation(fields: [AdminId], references: [AdminId])
   AdminId           String
   ProductStock      Int
 }

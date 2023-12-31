@@ -102,11 +102,13 @@ export async function updateProduct(formData: FormData): Promise<ResponseType> {
 
     const variantsSelected = formData.get("ProductVariants") as string;
     console.log("VARIANTS:", variantsSelected);
+
     await prisma.productVariant.deleteMany({
       where: {
         ProductId: id,
       },
     });
+
     for (const variant of variantsSelected.split(",")) {
       await prisma.productVariant.create({
         data: {

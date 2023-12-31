@@ -12,11 +12,6 @@ export const columns: ColumnDef<
   Prisma.PurchaseProductGetPayload<{
     include: {
       Product: true;
-      ProductVariant: {
-        include: {
-          Variant: true;
-        };
-      };
       PurchasedBy: true;
     };
   }>
@@ -66,7 +61,7 @@ export const columns: ColumnDef<
     header: "Name",
   },
   {
-    accessorKey: "ProductVariant.Variant.VariantName",
+    accessorKey: "VariantName",
     header: "Variant",
   },
   {

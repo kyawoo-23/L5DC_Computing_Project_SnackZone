@@ -30,31 +30,32 @@ export default async function Page() {
 
   return (
     <>
-      <h3 className='text-lg font-bold mb-3'>Featured products</h3>
-
-      <ProductListingLayout>
+      {featured && featured.length > 0 && (
         <>
-          {featured && featured.length > 0 ? (
-            featured.map((product) => (
-              <ProductCard
-                key={product.ProductId}
-                categoryName={product.Category.CategoryName}
-                productId={product.ProductId}
-                productName={product.ProductName}
-                productPrice={product.ProductPrice!}
-                productPrimaryImage={product.ProductPrimaryImage}
-                supplierName={product.Supplier.SupplierName}
-                isPromotion={product.IsPromotion}
-                promotionPrice={product.PromotionPrice || product.ProductPrice!}
-              />
-            ))
-          ) : (
-            <div>No featured products</div>
-          )}
+          <h3 className='text-lg font-bold mb-3'>Featured products</h3>
+          <ProductListingLayout>
+            <>
+              {featured.map((product) => (
+                <ProductCard
+                  key={product.ProductId}
+                  categoryName={product.Category.CategoryName}
+                  productId={product.ProductId}
+                  productName={product.ProductName}
+                  productPrice={product.ProductPrice!}
+                  productPrimaryImage={product.ProductPrimaryImage}
+                  supplierName={product.Supplier.SupplierName}
+                  isPromotion={product.IsPromotion}
+                  promotionPrice={
+                    product.PromotionPrice || product.ProductPrice!
+                  }
+                />
+              ))}
+            </>
+          </ProductListingLayout>
+          <hr className='my-8' />
         </>
-      </ProductListingLayout>
+      )}
 
-      <hr className='my-8' />
       <ProductListingLayout>
         <>
           {data &&

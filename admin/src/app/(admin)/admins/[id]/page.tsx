@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader/PageHeader";
 import { prisma } from "@/lib/prisma";
-import ClientUpdateForm from "@/app/admins/[id]/ClientUpdateForm";
+import ClientUpdateForm from "./ClientUpdateForm";
 
 const AdminDetailsPage = async ({ params }: { params: { id: string } }) => {
   const id = params.id;

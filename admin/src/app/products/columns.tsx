@@ -66,15 +66,6 @@ export const columns: ColumnDef<{
       return <DetailsButton details={cellValue.Product!.ProductId} />;
     },
   },
-  // {
-  //   accessorKey: "id",
-  //   header: "Action",
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const cellValue = row.original;
-  //     return <DetailsButton details={cellValue.id} />;
-  //   },
-  // },
 ];
 
 // export const columns: ColumnDef<Payment>[] = [
