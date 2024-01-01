@@ -40,14 +40,12 @@ export default async function CartPage() {
       <div className='grid gap-6'>
         {data && data.length > 0 ? (
           data.map((item) => (
-            <div
+            <Link
               className='p-4 border-2 rounded-lg hover:border-primary relative'
               key={item.CartProductId}
+              href={`/details/${item.ProductId}`}
             >
-              <Link
-                href={`/details/${item.ProductId}`}
-                className='grid grid-cols-6 items-center gap-4 text-white'
-              >
+              <div className='grid grid-cols-2 sm:grid-cols-6 items-center gap-4 text-white'>
                 <Image
                   src={item.Product.ProductPrimaryImage}
                   alt={item.Product.ProductName}
@@ -125,9 +123,9 @@ export default async function CartPage() {
                           : item.Product.ProductPrice!)}
                   </b>
                 </div>
-              </Link>
+              </div>
               <ClientRemoveButton id={item.CartProductId} />
-            </div>
+            </Link>
           ))
         ) : (
           <div className='col-span-2 mt-20'>

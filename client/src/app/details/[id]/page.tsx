@@ -32,14 +32,14 @@ export default async function ProductDetailsPage({
   return (
     <>
       {data && imageList && (
-        <div className='grid grid-cols-2'>
-          <div className='pb-10 pr-10'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+          <div className='pb-10 lg:pr-10'>
             <ClientImageCarousel
               primaryImg={data.ProductPrimaryImage}
               imageList={imageList}
             />
           </div>
-          <div className='pl-10 flex flex-col gap-2'>
+          <div className='pb-10 lg:pl-10 flex flex-col gap-2'>
             <p className='text-xs uppercase font-bold'>
               {data.Supplier.SupplierName}
             </p>

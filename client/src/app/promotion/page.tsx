@@ -23,7 +23,7 @@ export default async function PromotionPage() {
 
   return (
     <>
-      <div className='grid grid-cols-2 gap-4 items-center mb-8'>
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 items-center mb-8'>
         <div>
           <ClientTextAnimation />
         </div>

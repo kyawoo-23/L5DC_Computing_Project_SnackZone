@@ -26,7 +26,7 @@ import { IoCart, IoSearch } from "react-icons/io5";
 const NavBar = ({ count }: { count: number }) => {
   const router = useRouter();
   const token = getCookie("cus-token");
-  const name = getCookie("name");
+  const name = getCookie("cus-name");
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [mount, setMount] = useState(false);
@@ -178,24 +178,72 @@ const NavBar = ({ count }: { count: number }) => {
           </NavbarContent>
         )}
         <NavbarMenu>
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-                }
-                className='w-full'
-                href={`${item.link}`}
-                size='lg'
+          <>
+            {menuItems.map((item, index) => (
+              <NavbarItem
+                key={index}
+                {...(pathName === item.link ? { isActive: true } : {})}
               >
-                {item.name}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+                <Link
+                  color={pathName === item.link ? "primary" : "foreground"}
+                  href={`${item.link}`}
+                >
+                  {item.name}
+                </Link>
+              </NavbarItem>
+            ))}
+            {mount && !token ? (
+              <>
+                <NavbarItem>
+                  <Link href='/login'>Login</Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Button
+                    as={Link}
+                    color='primary'
+                    href='/signup'
+                    variant='flat'
+                    size='sm'
+                  >
+                    Sign Up
+                  </Button>
+                </NavbarItem>
+              </>
+            ) : (
+              <div className='flex items-center gap-4'>
+                <NavbarItem>
+                  <Link href='/profile'>{name}</Link>
+                </NavbarItem>
+                <NavbarItem as={Link} href='/wishlist'>
+                  <span>
+                    <FaHeart className='text-[23px] text-white' />
+                  </span>
+                </NavbarItem>
+                <NavbarItem as={Link} href='/cart'>
+                  <Badge
+                    content={count}
+                    color='warning'
+                    variant='faded'
+                    isInvisible={count === 0}
+                  >
+                    <span>
+                      <IoCart className='text-[26px] text-white' />
+                    </span>
+                  </Badge>
+                </NavbarItem>
+
+                <NavbarItem>
+                  <Button
+                    size='sm'
+                    variant='ghost'
+                    onClick={() => setIsDialogOpen(true)}
+                  >
+                    Logout
+                  </Button>
+                </NavbarItem>
+              </div>
+            )}
+          </>
         </NavbarMenu>
       </Navbar>
 

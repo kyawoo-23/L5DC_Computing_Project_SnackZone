@@ -29,7 +29,7 @@ export default async function WishListPage() {
     <div>
       <PageTitle title='Wishlist' />
 
-      <div className='grid grid-cols-2 gap-6'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         {data && data.length > 0 ? (
           data.map((item) => (
             <div

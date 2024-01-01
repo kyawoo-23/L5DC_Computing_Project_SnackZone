@@ -70,7 +70,7 @@ export default function ProductCard({
       </CardHeader>
       <CardBody className='overflow-visible py-2'>
         <Image
-          alt='Card background'
+          alt={productName}
           className='object-cover rounded-xl h-[220px] border-2 border-gray-800'
           src={productPrimaryImage}
           width={200}

@@ -24,7 +24,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='grid grid-cols-2 items-center mt-12'>
+    <div className='grid grid-cols-1 md:grid-cols-2 max-sm:gap-8 items-center mt-12'>
       <div>
         <h1 className='text-4xl font-bold mb-2'>Login</h1>
         <p className='text-gray-500'>to enjoy more of our services</p>

@@ -17,7 +17,7 @@ export default function ClientTextAnimation() {
         wrapper='span'
         cursor={true}
         repeat={Infinity}
-        className='text-7xl font-bold'
+        className='text-5xl lg:text-7xl font-bold'
       />
     </div>
   );
