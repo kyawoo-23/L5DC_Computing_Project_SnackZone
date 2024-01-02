@@ -12,7 +12,7 @@ const CategoryDetailsPage = async ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-      <PageHeader title='Update Supplier' />
+      <PageHeader title='Update DeliveryService' />
       <div className='grid place-content-center'>
         {data && <ClientUpdateForm {...data} />}
       </div>

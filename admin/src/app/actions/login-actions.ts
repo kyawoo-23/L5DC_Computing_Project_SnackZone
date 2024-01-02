@@ -12,7 +12,7 @@ export async function login(formData: FormData): Promise<ResponseType> {
 
   try {
     const user = await prisma.admin.findUnique({
-      where: { Email: email },
+      where: { Email: email, IsActive: 1 },
       include: {
         AdminRole: true,
       },

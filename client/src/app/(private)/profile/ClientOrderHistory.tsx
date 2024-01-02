@@ -6,6 +6,7 @@ import { Image } from "@nextui-org/react";
 type ClientOrderHistoryProps = {
   order: Prisma.CustomerOrderGetPayload<{
     include: {
+      DeliveryService: true;
       OrderProducts: {
         include: {
           Product: true;
@@ -15,6 +16,7 @@ type ClientOrderHistoryProps = {
   }>;
 };
 export default function ClientOrderHistory({ order }: ClientOrderHistoryProps) {
+  console.log(order);
   return (
     <>
       <div className='flex flex-col space-y-3 my-4'>
@@ -51,14 +53,25 @@ export default function ClientOrderHistory({ order }: ClientOrderHistoryProps) {
               <span className='font-semibold'>{order.CustomerPhone}</span>
             </span>
           </p>
-          <p className='text-sm'>
+          <p className='text-sm text-right'>
             Date:{" "}
             <span className='font-semibold'>
               {order.OrderAt.toLocaleString()}
             </span>
             <br />
-            <span className='flex justify-end'>
-              <span className='text-sm'>Total: $</span>
+            {order.DeliveryService && (
+              <>
+                <span>
+                  Delivery Service:{" "}
+                  <span className='font-semibold'>
+                    {order.DeliveryService.DeliveryServiceName}
+                  </span>
+                </span>
+              </>
+            )}
+            <br />
+            <span className='text-sm'>
+              Total (with delivery charges): $
               <span className='font-semibold'>{order.TotalPrice}</span>
             </span>
           </p>

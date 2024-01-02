@@ -19,6 +19,7 @@ export default async function ProfilePage() {
       CustomerId: token,
     },
     include: {
+      DeliveryService: true,
       OrderProducts: {
         include: {
           Product: true,

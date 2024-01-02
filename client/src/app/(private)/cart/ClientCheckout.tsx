@@ -141,7 +141,7 @@ export default function ClientCheckout({ data, info }: ClientCheckoutProps) {
               <Image src={KbzPay.src} alt='kbz pay' width={250} height={250} />
               <small>
                 Please input the screenshot of the payment after the transaction
-                to our KBZ Pay account
+                to our KBZ Pay account <i>(09795559054)</i>
               </small>
               <input
                 id='fileInput'
