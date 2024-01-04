@@ -4,6 +4,7 @@ import Image from "next/image";
 import DetailsButton from "@/components/Buttons/DetailsButton";
 import { ColumnDef } from "@tanstack/react-table";
 import { Supplier } from "@prisma/client";
+import StatusPill from "@/components/Pill/StatusPill";
 
 export const columns: ColumnDef<Supplier>[] = [
   {
@@ -25,6 +26,15 @@ export const columns: ColumnDef<Supplier>[] = [
           className='rounded bg-zinc-300 w-10 h-10 object-cover'
         />
       );
+    },
+  },
+  {
+    accessorKey: "IsActive",
+    header: "Status",
+    id: "status",
+    cell: ({ row }) => {
+      const cellValue = row.original;
+      return <StatusPill Value={cellValue} />;
     },
   },
   {
