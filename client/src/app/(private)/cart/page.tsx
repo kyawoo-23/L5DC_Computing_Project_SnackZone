@@ -45,7 +45,7 @@ export default async function CartPage() {
               key={item.CartProductId}
               href={`/details/${item.ProductId}`}
             >
-              <div className='grid grid-cols-2 sm:grid-cols-6 items-center gap-4 text-white'>
+              <div className='grid grid-cols-2 sm:grid-cols-6 items-center gap-4 text-white w-full'>
                 <Image
                   src={item.Product.ProductPrimaryImage}
                   alt={item.Product.ProductName}

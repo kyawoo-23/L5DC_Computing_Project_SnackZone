@@ -34,11 +34,7 @@ export async function completeOrder(id: string): Promise<ResponseType> {
           Product: {
             ProductId: orderProduct.ProductId,
           },
-          ProductVariant: {
-            Variant: {
-              VariantName: orderProduct.VariantName,
-            },
-          },
+          VariantName: orderProduct.VariantName,
           ProductStock: {
             gt: 0,
           },
@@ -91,6 +87,7 @@ export async function completeOrder(id: string): Promise<ResponseType> {
       isSuccess: true,
     };
   } catch (error) {
+    console.log("ERROR: ", error);
     return {
       message: `Failed to complete order`,
       isSuccess: false,
