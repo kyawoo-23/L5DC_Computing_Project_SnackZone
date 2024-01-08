@@ -25,7 +25,7 @@ export default async function SupplierDetailsPage({
 
   return (
     <>
-      <PageTitle title={`Supplier: ${data[0].Category.CategoryName}`} />
+      <PageTitle title={`Supplier: ${data[0].Supplier.SupplierName}`} />
       <ProductListingLayout>
         <>
           {data &&
