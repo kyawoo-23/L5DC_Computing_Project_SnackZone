@@ -14,6 +14,21 @@ export default function SignupPage() {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const handleSignup = async (formData: FormData) => {
+    if (!formData.get("name")) {
+      toast.error("Please fill in user name");
+      return;
+    }
+
+    if (!formData.get("email")) {
+      toast.error("Please fill in your email");
+      return;
+    }
+
+    if (!formData.get("password")) {
+      toast.error("Please fill in your password");
+      return;
+    }
+
     const res = await createCustomer(formData);
     if (res.isSuccess) {
       toast.success(res.message);
@@ -43,8 +58,6 @@ export default function SignupPage() {
           label='User name'
           placeholder='Enter your user name'
           name='name'
-          required
-          isRequired
         />
         <Input
           variant='bordered'
@@ -52,8 +65,6 @@ export default function SignupPage() {
           label='Email'
           placeholder='Enter your email'
           name='email'
-          required
-          isRequired
         />
         <Input
           label='Password'
@@ -74,8 +85,6 @@ export default function SignupPage() {
             </button>
           }
           type={isVisible ? "text" : "password"}
-          required
-          isRequired
         />
 
         <SubmitButton label='Create account' />

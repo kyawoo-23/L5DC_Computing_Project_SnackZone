@@ -14,6 +14,16 @@ export default function LoginPage() {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const handleLogin = async (formData: FormData) => {
+    if (!formData.get("email")) {
+      toast.error("Please fill in your email");
+      return;
+    }
+
+    if (!formData.get("password")) {
+      toast.error("Please fill in your password");
+      return;
+    }
+
     const res = await loginCustomer(formData);
     if (res.isSuccess) {
       toast.success(res.message);
@@ -43,8 +53,6 @@ export default function LoginPage() {
           label='Email'
           placeholder='Enter your email'
           name='email'
-          isRequired
-          required
         />
         <Input
           label='Password'
@@ -65,8 +73,6 @@ export default function LoginPage() {
             </button>
           }
           type={isVisible ? "text" : "password"}
-          isRequired
-          required
         />
 
         <SubmitButton label='Login' />

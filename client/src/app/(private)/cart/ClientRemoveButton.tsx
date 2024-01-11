@@ -8,7 +8,11 @@ import { FaTrash } from "react-icons/fa6";
 export default function ClientRemoveButton({ id }: { id: string }) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRemoveWishList = async () => {
+  const handleRemoveWishList = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsLoading(true);
     const res = await removeFromCart(id);
     if (res.isSuccess) {
@@ -26,7 +30,7 @@ export default function ClientRemoveButton({ id }: { id: string }) {
       variant='ghost'
       className='absolute top-3 right-3 z-10'
       size='sm'
-      onClick={handleRemoveWishList}
+      onClick={(e) => handleRemoveWishList(e)}
       isLoading={isLoading}
     >
       <FaTrash />

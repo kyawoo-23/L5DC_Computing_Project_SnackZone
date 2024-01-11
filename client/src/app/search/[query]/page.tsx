@@ -30,7 +30,11 @@ export default async function SearchPage({
       <PageTitle title={`Search results for "${params.query}"`} />
       <ProductListingLayout>
         <>
+          {data && data.length === 0 && (
+            <p className='text-center text-gray-100'>No results found</p>
+          )}
           {data &&
+            data.length > 0 &&
             data.map((product) => (
               <ProductCard
                 key={product.ProductId}
@@ -46,7 +50,7 @@ export default async function SearchPage({
             ))}
         </>
       </ProductListingLayout>
-      <LoadMore query={params.query} />
+      {data && data.length > 0 && <LoadMore query={params.query} />}
     </div>
   );
 }

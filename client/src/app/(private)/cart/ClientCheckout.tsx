@@ -41,6 +41,16 @@ export default function ClientCheckout({ data, info }: ClientCheckoutProps) {
       return;
     }
 
+    if (!phone) {
+      toast.error("Please fill in the contact number");
+      return;
+    }
+
+    if (!address) {
+      toast.error("Please fill in the shipping address");
+      return;
+    }
+
     const orderData = {
       CustomerPhone: phone,
       CustomerAddress: address,
@@ -103,8 +113,6 @@ export default function ClientCheckout({ data, info }: ClientCheckoutProps) {
             label='Contact number'
             placeholder='Enter your phone number here'
             labelPlacement='outside'
-            isRequired
-            required
             startContent={
               <FaPhone className='text-default-400 pointer-events-none flex-shrink-0' />
             }
@@ -114,8 +122,6 @@ export default function ClientCheckout({ data, info }: ClientCheckoutProps) {
           />
 
           <Textarea
-            isRequired
-            required
             label='Shipping address'
             labelPlacement='outside'
             placeholder='Enter your address here'
