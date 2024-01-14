@@ -51,21 +51,23 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {table.getCoreRowModel().rows?.length > 10 && (
-        <DataTablePagination table={table} />
-      )}
-      {filter && (
-        <Input
-          placeholder={`Filter ${filter}s...`}
-          value={
-            (table.getColumn(`${filter}`)?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn(`${filter}`)?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm max-h-9 ml-auto mb-5 bg-transparent placeholder:text-gray-400 text-white'
-        />
-      )}
+      <div className={`${filter ? "flex justify-between items-center" : ""}`}>
+        {filter && (
+          <Input
+            placeholder={`Filter ${filter}s...`}
+            value={
+              (table.getColumn(`${filter}`)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(`${filter}`)?.setFilterValue(event.target.value)
+            }
+            className='max-w-sm max-h-9 mb-5 bg-transparent placeholder:text-gray-400 text-white'
+          />
+        )}
+        {table.getCoreRowModel().rows?.length > 10 && (
+          <DataTablePagination table={table} />
+        )}
+      </div>
       <div className='border-2 border-muted/90 rounded'>
         <Table>
           <TableHeader>

@@ -20,7 +20,7 @@ const OrdersPage = async () => {
     <div>
       <PageHeader title={`Order List`} />
       <div>
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} filter='OrderCode' />
       </div>
     </div>
   );
