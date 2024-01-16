@@ -1,0 +1,16 @@
+{
+  "name": "snack-zone_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "startAdmin": "cd admin && npm run dev -- -p 3000",
+    "startClient": "cd client && npm run dev -- -p 3001",
+    "startStudio": "cd schema-central && npx prisma studio",
+    "start": "npm run startAdmin | npm run startClient | npm run startStudio",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
