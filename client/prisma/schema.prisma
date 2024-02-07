@@ -6,6 +6,176 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Category {
+  CategoryId    String    @id @default(cuid())
+  CategoryName  String    @unique
+  CategoryImage String
+  IsActive      Int       @default(1)
+  Products      Product[]
+}
+
+model Supplier {
+  SupplierId    String    @id @default(cuid())
+  SupplierName  String    @unique
+  SupplierImage String
+  IsActive      Int       @default(1)
+  Products      Product[]
+}
+
+model Variant {
+  VariantId       String           @id @default(cuid())
+  VariantName     String           @unique
+  VariantColor    String
+  ProductVariants ProductVariant[]
+}
+
+model Product {
+  ProductId              String            @id @default(cuid())
+  ProductName            String
+  ProductDescription     String
+  ProductPrimaryImage    String
+  ProductWeight          Float
+  ProductPrice           Float?
+  WholesalePrice         Float?
+  ProductPackingQuantity Int
+  IsPromotion            Int               @default(0)
+  PromotionPrice         Float?
+  IsFeatured             Int               @default(0)
+  IsActive               Int               @default(0)
+  Supplier               Supplier          @relation(fields: [SupplierId], references: [SupplierId])
+  SupplierId             String
+  Category               Category          @relation(fields: [CategoryId], references: [CategoryId])
+  CategoryId             String
+  ProductVariants        ProductVariant[]
+  ProductImages          ProductImage[]
+  PurchaseProducts       PurchaseProduct[]
+  WishListProducts       WishListProduct[]
+  CartProducts           CartProduct[]
+  OrderProducts          OrderProduct[]
+}
+
+model ProductVariant {
+  ProductVariantId String        @id @default(cuid())
+  Product          Product       @relation(fields: [ProductId], references: [ProductId])
+  ProductId        String
+  Variant          Variant       @relation(fields: [VariantId], references: [VariantId])
+  VariantId        String
+  CartProducts     CartProduct[]
+}
+
+model ProductImage {
+  ProductImagesId String  @id @default(cuid())
+  Product         Product @relation(fields: [ProductId], references: [ProductId])
+  ProductId       String
+  ProductImage    String
+}
+
+model PurchaseProduct {
+  PurchaseProductId String   @id @default(cuid())
+  PurchaseAt        DateTime @default(now())
+  Product           Product  @relation(fields: [ProductId], references: [ProductId])
+  ProductId         String
+  VariantName       String
+  PurchaseQuantity  Int
+  OriginalPrice     Float
+  ExpiryDate        DateTime
+  PurchasedBy       Admin    @relation(fields: [AdminId], references: [AdminId])
+  AdminId           String
+  ProductStock      Int
+}
+
+model Admin {
+  AdminId          String            @id @default(cuid())
+  Name             String
+  Email            String            @unique
+  Password         String?
+  AdminRole        AdminRole         @relation(fields: [AdminRoleId], references: [AdminRoleId])
+  AdminRoleId      String
+  IsActive         Int               @default(1)
+  PurchaseProducts PurchaseProduct[]
+  CustomerOrders   CustomerOrder[]
+}
+
+model AdminRole {
+  AdminRoleId   String  @id @default(cuid())
+  AdminRoleName String  @unique
+  Admins        Admin[]
+}
+
+model DeliveryService {
+  DeliveryServiceId    String          @id @default(cuid())
+  DeliveryServiceName  String          @unique
+  DeliveryServiceImage String
+  IsActive             Int             @default(1)
+  CustomerOrder        CustomerOrder[]
+}
+
+model Customer {
+  CustomerId       String            @id @default(cuid())
+  CustomerName     String
+  CustomerEmail    String            @unique
+  CustomerPassword String?
+  CustomerPhone    String?
+  CustomerAddress  String?
+  WishListProducts WishListProduct[]
+  CartProducts     CartProduct[]
+  CustomerOrder    CustomerOrder[]
+}
+
+model WishListProduct {
+  WishListProductId String   @id @default(cuid())
+  Product           Product  @relation(fields: [ProductId], references: [ProductId])
+  ProductId         String
+  Customer          Customer @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId        String
+}
+
+model CartProduct {
+  CartProductId    String          @id @default(cuid())
+  ProductQuantity  Int
+  PurchaseType     String
+  Product          Product         @relation(fields: [ProductId], references: [ProductId])
+  ProductId        String
+  Customer         Customer        @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId       String
+  ProductVariant   ProductVariant? @relation(fields: [ProductVariantId], references: [ProductVariantId])
+  ProductVariantId String
+}
+
+model CustomerOrder {
+  CustomerOrderId     String           @id @default(cuid())
+  OrderCode           String           @unique
+  OrderStatus         String           @default("Pending")
+  TotalPrice          Float
+  IsPrepaid           Int
+  PrepaidVoucherImage String?
+  AssignedAdmin       Admin?           @relation(fields: [AssignedAdminId], references: [AdminId])
+  AssignedAdminId     String?
+  DeliveryService     DeliveryService? @relation(fields: [DeliveryServiceId], references: [DeliveryServiceId])
+  DeliveryServiceId   String?
+  Customer            Customer         @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId          String
+  OrderAt             DateTime         @default(now())
+  AcceptedAt          DateTime?
+  DeliveredAt         DateTime?
+  CustomerAddress     String
+  CustomerPhone       String
+  OrderProducts       OrderProduct[]
+}
+
+model OrderProduct {
+  OrderProductId  String        @id @default(cuid())
+  ProductName     String
+  VariantName     String
+  Quantity        Int
+  Price           Float
+  Product         Product       @relation(fields: [ProductId], references: [ProductId])
+  ProductId       String
+  CustomerOrder   CustomerOrder @relation(fields: [CustomerOrderId], references: [CustomerOrderId])
+  CustomerOrderId String
+  PurchaseType    String
 }
