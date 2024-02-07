@@ -53,15 +53,18 @@ model Product {
   ProductVariants        ProductVariant[]
   ProductImages          ProductImage[]
   PurchaseProducts       PurchaseProduct[]
+  WishListProducts       WishListProduct[]
+  CartProducts           CartProduct[]
+  OrderProducts          OrderProduct[]
 }
 
 model ProductVariant {
-  ProductVariantId String            @id @default(cuid())
-  Product          Product           @relation(fields: [ProductId], references: [ProductId])
+  ProductVariantId String        @id @default(cuid())
+  Product          Product       @relation(fields: [ProductId], references: [ProductId])
   ProductId        String
-  Variant          Variant           @relation(fields: [VariantId], references: [VariantId])
+  Variant          Variant       @relation(fields: [VariantId], references: [VariantId])
   VariantId        String
-  PurchaseProducts PurchaseProduct[]
+  CartProducts     CartProduct[]
 }
 
 model ProductImage {
@@ -72,16 +75,15 @@ model ProductImage {
 }
 
 model PurchaseProduct {
-  PurchaseProductId String         @id @default(cuid())
-  PurchaseAt        DateTime       @default(now())
-  Product           Product        @relation(fields: [ProductId], references: [ProductId])
+  PurchaseProductId String   @id @default(cuid())
+  PurchaseAt        DateTime @default(now())
+  Product           Product  @relation(fields: [ProductId], references: [ProductId])
   ProductId         String
-  ProductVariant    ProductVariant @relation(fields: [ProductVariantId], references: [ProductVariantId])
-  ProductVariantId  String
+  VariantName       String
   PurchaseQuantity  Int
   OriginalPrice     Float
   ExpiryDate        DateTime
-  PurchasedBy       Admin          @relation(fields: [AdminId], references: [AdminId])
+  PurchasedBy       Admin    @relation(fields: [AdminId], references: [AdminId])
   AdminId           String
   ProductStock      Int
 }
@@ -95,6 +97,7 @@ model Admin {
   AdminRoleId      String
   IsActive         Int               @default(1)
   PurchaseProducts PurchaseProduct[]
+  CustomerOrders   CustomerOrder[]
 }
 
 model AdminRole {
@@ -104,8 +107,75 @@ model AdminRole {
 }
 
 model DeliveryService {
-  DeliveryServiceId    String @id @default(cuid())
-  DeliveryServiceName  String @unique
+  DeliveryServiceId    String          @id @default(cuid())
+  DeliveryServiceName  String          @unique
   DeliveryServiceImage String
-  IsActive             Int    @default(1)
+  IsActive             Int             @default(1)
+  CustomerOrder        CustomerOrder[]
+}
+
+model Customer {
+  CustomerId       String            @id @default(cuid())
+  CustomerName     String
+  CustomerEmail    String            @unique
+  CustomerPassword String?
+  CustomerPhone    String?
+  CustomerAddress  String?
+  WishListProducts WishListProduct[]
+  CartProducts     CartProduct[]
+  CustomerOrder    CustomerOrder[]
+}
+
+model WishListProduct {
+  WishListProductId String   @id @default(cuid())
+  Product           Product  @relation(fields: [ProductId], references: [ProductId])
+  ProductId         String
+  Customer          Customer @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId        String
+}
+
+model CartProduct {
+  CartProductId    String          @id @default(cuid())
+  ProductQuantity  Int
+  PurchaseType     String
+  Product          Product         @relation(fields: [ProductId], references: [ProductId])
+  ProductId        String
+  Customer         Customer        @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId       String
+  ProductVariant   ProductVariant? @relation(fields: [ProductVariantId], references: [ProductVariantId])
+  ProductVariantId String
+}
+
+model CustomerOrder {
+  CustomerOrderId     String           @id @default(cuid())
+  OrderCode           String           @unique
+  OrderStatus         String           @default("Pending")
+  TotalPrice          Float
+  IsPrepaid           Int
+  PrepaidVoucherImage String?
+  AssignedAdmin       Admin?           @relation(fields: [AssignedAdminId], references: [AdminId])
+  AssignedAdminId     String?
+  DeliveryService     DeliveryService? @relation(fields: [DeliveryServiceId], references: [DeliveryServiceId])
+  DeliveryServiceId   String?
+  Customer            Customer         @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId          String
+  OrderAt             DateTime         @default(now())
+  AcceptedAt          DateTime?
+  DeliveredAt         DateTime?
+  CustomerAddress     String
+  CustomerPhone       String
+  OrderProducts       OrderProduct[]
+}
+
+model OrderProduct {
+  OrderProductId  String        @id @default(cuid())
+  ProductName     String
+  VariantName     String
+  Quantity        Int
+  Price           Float
+  Product         Product       @relation(fields: [ProductId], references: [ProductId])
+  ProductId       String
+  CustomerOrder   CustomerOrder @relation(fields: [CustomerOrderId], references: [CustomerOrderId])
+  CustomerOrderId String
+  PurchaseType    String
 }
