@@ -192,7 +192,7 @@ const NavBar = ({ count }: { count: number }) => {
                 </Link>
               </NavbarItem>
             ))}
-            {mount && !token ? (
+            {/* {mount && !token ? (
               <>
                 <NavbarItem>
                   <Link href='/login'>Login</Link>
@@ -242,7 +242,7 @@ const NavBar = ({ count }: { count: number }) => {
                   </Button>
                 </NavbarItem>
               </div>
-            )}
+            )} */}
           </>
         </NavbarMenu>
       </Navbar>
