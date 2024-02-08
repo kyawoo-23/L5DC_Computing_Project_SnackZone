@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import React from "react";
 import { columns } from "./columns";
 
+export const dynamic = "force-dynamic";
+
 const OrdersPage = async () => {
   const data = await prisma.customerOrder.findMany({
     include: {
