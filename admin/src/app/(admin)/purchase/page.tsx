@@ -4,6 +4,8 @@ import { DataTable } from "@/components/DataTable/data-table";
 import CreateButton from "@/components/Buttons/CreateButton";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const PurchasePage = async () => {
   const data = await prisma.purchaseProduct.findMany({
     include: {

@@ -4,6 +4,8 @@ import { DataTable } from "@/components/DataTable/data-table";
 import CreateButton from "@/components/Buttons/CreateButton";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const ProductsPage = async () => {
   const purchaseData = await prisma.purchaseProduct.groupBy({
     by: ["ProductId", "ExpiryDate"],
