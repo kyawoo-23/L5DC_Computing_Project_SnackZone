@@ -2,6 +2,11 @@
 
 Welcome to the Snack Zone project! This repository contains the source code for both the customer-facing application (client), the admin dashboard (admin), the central schema and models (schema-central), and the database SQL files (database).
 
+## Live website
+
+- **client**: https://kko-cp-snack-zone.vercel.app/
+- **admin**: https://kko-cp-snack-zone-admin.vercel.app/login
+
 ## Project Structure
 
 - **client**: The client folder contains the project for the customer side of the Snack Zone application. It is built using Next.js.
