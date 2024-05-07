@@ -8,16 +8,6 @@ import { cookies } from "next/headers";
 
 export async function completeOrder(id: string): Promise<ResponseType> {
   try {
-    await prisma.customerOrder.update({
-      where: {
-        CustomerOrderId: id,
-      },
-      data: {
-        OrderStatus: "Completed",
-        DeliveredAt: new Date(),
-      },
-    });
-
     const orderProducts = await prisma.orderProduct.findMany({
       where: {
         CustomerOrderId: id,
@@ -80,6 +70,16 @@ export async function completeOrder(id: string): Promise<ResponseType> {
     }
 
     await prisma.$transaction(purchaseProductUpdates);
+
+    await prisma.customerOrder.update({
+      where: {
+        CustomerOrderId: id,
+      },
+      data: {
+        OrderStatus: "Completed",
+        DeliveredAt: new Date(),
+      },
+    });
 
     revalidatePath(`/orders/${id}`);
     return {
