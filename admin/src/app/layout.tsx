@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <Toaster position='top-right' reverseOrder={false} />
         <Sidebar>{children}</Sidebar>
+        <Analytics />
       </body>
     </html>
   );
