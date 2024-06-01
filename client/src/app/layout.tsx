@@ -7,6 +7,8 @@ import { Toaster } from "react-hot-toast";
 import { getCookie } from "cookies-next";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -47,6 +49,8 @@ export default async function RootLayout({
         <div className='max-w-5xl p-6 mx-auto'>
           <Providers>{children}</Providers>
         </div>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
